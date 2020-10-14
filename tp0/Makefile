@@ -9,7 +9,7 @@ OBJ = base64.o
 
 all: $(EXEC)
 
-run:
+run: $(EXEC)
 	./$(EXEC)
 
 %.o: %.c %.h
