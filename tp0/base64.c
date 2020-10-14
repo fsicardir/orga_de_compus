@@ -23,7 +23,7 @@ static void octets_to_sextets(const unsigned char octets[3], unsigned char sexte
 }
 
 unsigned char *base64_encode(const unsigned char *input, size_t input_size) {
-    size_t output_size = input_size * 4 / 3 + 5;
+    size_t output_size = input_size * 4 / 3 + 1;
 
     unsigned char *output = malloc(sizeof(char) * output_size);
     if (output == NULL)
