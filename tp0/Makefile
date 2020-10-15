@@ -1,11 +1,10 @@
-EXEC := base64
+EXEC := tp0
 
 CC = gcc
 
 CCFLAGS = -Wall -Wextra -Werror -pedantic --std=c99
 
-DEPS = 
-OBJ = base64.o
+OBJ = tp0.o base64.o
 
 all: $(EXEC)
 
