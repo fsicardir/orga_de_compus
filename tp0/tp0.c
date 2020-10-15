@@ -10,7 +10,7 @@ void print_version() {
     printf("%s\n", VERSION);
 }
 
-void print_usage() {
+void print_help() {
     printf("Usage: \n"
            "   tp0 -h \n"
            "   tp0 -V \n"
@@ -44,11 +44,11 @@ int main (int argc, char *const *argv) {
 
     while ((opt = getopt_long(argc, argv, short_opts, long_options, NULL)) != -1) {
         switch (opt) {
-            case 'h':
-                print_usage();
-                return OK;
             case 'V':
                 print_version();
+                return OK;
+            case 'h':
+                print_help();
                 return OK;
             case 'i':
                 fp = fopen(optarg, "r");
