@@ -3,15 +3,16 @@
 
 #define PADDING_CHAR '='
 
-/*
- * Encodes the given array of octets to base64 and stores the result into the given sextets array.
- * missing_octets is the amount of octets missing in the octets array
- */
-void base64_encode(unsigned const char octets[3], unsigned char sextets[4], int missing_octets);
+#include <stdio.h>
 
 /*
- * Decodes the given array of sextets from base64 and stores the result into the given octets array.
+ * Encodes the given fp file to base64 and writes the result in the given wfp file.
  */
-void base64_decode(unsigned const char sextets[4], unsigned char octets[3]);
+void base64_encode_file(FILE *fp, FILE* wfp);
+
+/*
+ * Decodes the given fp file from base64 and writes the result in the given wfp file.
+ */
+void base64_decode_file(FILE *fp, FILE* wfp);
 
 #endif //BASE64_BASE64_H

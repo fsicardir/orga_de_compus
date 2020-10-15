@@ -7,53 +7,8 @@
 #define OK 0
 #define ERROR 1
 
-void write_file(FILE* wfp, unsigned char* output, int size) {
-    for (int i=0; i < size; i++) {
-        fputc(output[i], wfp);
-    }
-}
-
-void encode(FILE *fp, FILE* wfp) {
-    unsigned char to_encode[3];
-    unsigned char encoded[4];
-    char read_c;
-    int octets_count = 0;
-
-    while ((read_c = fgetc(fp)) != EOF) {
-        to_encode[octets_count++] = read_c;
-        if (octets_count == 3) {
-            base64_encode(to_encode, encoded, 0);
-            octets_count = 0;
-            write_file(wfp, encoded, 4);
-        }
-    }
-
-    if (octets_count > 0) {
-        if (octets_count == 1) to_encode[1] = 0u;
-        if (octets_count <= 2) to_encode[2] = 0u;
-        base64_encode(to_encode, encoded, 3 - octets_count);
-        write_file(wfp, encoded, 4 - octets_count);
-    }
-}
-
-void decode(FILE *fp, FILE* wfp) {
-    unsigned char to_decode[4];
-    unsigned char decoded[3];
-    char read_c;
-    int sextets_count = 0;
-
-    while ((read_c = fgetc(fp)) != EOF) {
-        to_decode[sextets_count++] = read_c;
-        if (sextets_count == 4) {
-            base64_decode(to_decode, decoded);
-            sextets_count = 0;
-            write_file(wfp, decoded, 3);
-        }
-    }
-
-    if (sextets_count != 0) {
-        fprintf(stderr, "Bad encoded\n");
-    }
+void print_version() {
+    printf("%s\n", VERSION);
 }
 
 void print_usage() {
@@ -70,10 +25,6 @@ void print_usage() {
            "Examples: \n"
            "   tp0 -i input.txt -o output.txt \n"
     );
-}
-
-void print_version() {
-    printf("%s\n", VERSION);
 }
 
 int main (int argc, char *const *argv) {
@@ -124,9 +75,9 @@ int main (int argc, char *const *argv) {
     }
 
     if (is_encode) {
-        encode(fp, wfp);
+        base64_encode_file(fp, wfp);
     } else {
-        decode(fp, wfp);
+        base64_decode_file(fp, wfp);
     }
 
     fclose(fp);
