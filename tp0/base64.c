@@ -23,10 +23,14 @@ void octets_to_sextets(unsigned const char octets[3], unsigned char sextets[4], 
     if (missing_octets == 2) sextets[2] = PADDING_CHAR;
 }
 
-void sextets_to_octets(unsigned const char sextets[4], unsigned char octets[3]) {
+int sextets_to_octets(unsigned const char sextets[4], unsigned char octets[3]) {
     octets[0] = base64_decoding[sextets[0]] << 2 | base64_decoding[sextets[1]] >> 4;
     octets[1] = base64_decoding[sextets[1]] << 4 | base64_decoding[sextets[2]] >> 2;
     octets[2] = base64_decoding[sextets[2]] << 6 | base64_decoding[sextets[3]];
+
+    if (sextets[2] == PADDING_CHAR) return 1;
+    if (sextets[3] == PADDING_CHAR) return 2;
+    return 3;
 }
 
 void build_base64_decoding() {
@@ -51,8 +55,8 @@ void base64_encode_file(FILE *fp, FILE* wfp) {
         to_encode[octets_count++] = read_c;
         if (octets_count == 3) {
             octets_to_sextets(to_encode, encoded, 0);
-            octets_count = 0;
             write_file(wfp, encoded, 4);
+            octets_count = 0;
         }
     }
 
@@ -75,9 +79,8 @@ void base64_decode_file(FILE *fp, FILE* wfp) {
     while ((read_c = fgetc(fp)) != EOF) {
         to_decode[sextets_count++] = read_c;
         if (sextets_count == 4) {
-            sextets_to_octets(to_decode, decoded);
+            write_file(wfp, decoded, sextets_to_octets(to_decode, decoded));
             sextets_count = 0;
-            write_file(wfp, decoded, 3);
         }
     }
 
