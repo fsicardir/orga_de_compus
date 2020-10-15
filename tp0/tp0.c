@@ -50,16 +50,16 @@ int main (int argc, char *const *argv) {
             case 'h':
                 print_help();
                 return OK;
-            case 'i':
-                fp = fopen(optarg, "r");
-                if (!fp) {
+            case 'o':
+                wfp = fopen(optarg, "w");
+                if (!wfp) {
                     fprintf(stderr, "File not found \n");
                     return ERROR;
                 }
                 continue;
-            case 'o':
-                wfp = fopen(optarg, "w");
-                if (!wfp) {
+            case 'i':
+                fp = fopen(optarg, "r");
+                if (!fp) {
                     fprintf(stderr, "File not found \n");
                     return ERROR;
                 }
