@@ -60,7 +60,7 @@ void base64_encode_file(FILE *fp, FILE* wfp) {
         if (octets_count == 1) to_encode[1] = 0u;
         if (octets_count <= 2) to_encode[2] = 0u;
         octets_to_sextets(to_encode, encoded, 3 - octets_count);
-        write_file(wfp, encoded, 4 - octets_count);
+        write_file(wfp, encoded, 4);
     }
 }
 
