@@ -1,15 +1,10 @@
 #include "base64.h"
 
 #define INVALID 128
-#define WHITESPACE 129
 
 static const unsigned char base64_encoding[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static unsigned char base64_decoding[256] = {
         INVALID,
-        [' '] = WHITESPACE,
-        ['\n'] = WHITESPACE,
-        ['\r'] = WHITESPACE,
-        ['\t'] = WHITESPACE,
         [PADDING_CHAR] = 0,
 };
 
@@ -77,6 +72,11 @@ void base64_decode_file(FILE *fp, FILE* wfp) {
     build_base64_decoding();
 
     while ((read_c = fgetc(fp)) != EOF) {
+        if (base64_decoding[(unsigned char) read_c] > 63) {
+            fprintf(stderr, "Bad encoded: invalid characters \n");
+            return;
+        }
+
         to_decode[sextets_count++] = read_c;
         if (sextets_count == 4) {
             write_file(wfp, decoded, sextets_to_octets(to_decode, decoded));
