@@ -7,7 +7,7 @@
 #define ERROR 1
 
 void print_version() {
-    printf("%s\n", VERSION);
+    printf("%s \n", VERSION);
 }
 
 void print_help() {
@@ -28,11 +28,12 @@ void print_help() {
 
 int main (int argc, char *const *argv) {
     static struct option long_options[] = {
-            {"version", no_argument, 0, 'V'},
-            {"help", no_argument, 0, 'h'},
-            {"output", required_argument, 0, 'o'},
-            {"input", required_argument, 0, 'i'},
-            {"decode", no_argument, 0, 'd'}
+            {"version", no_argument, NULL, 'V'},
+            {"help", no_argument, NULL, 'h'},
+            {"output", required_argument, NULL, 'o'},
+            {"input", required_argument, NULL, 'i'},
+            {"decode", no_argument, NULL, 'd'},
+            {NULL, 0, NULL, 0}
     };
     const char * const short_opts = "Vho:i:d";
 
