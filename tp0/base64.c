@@ -43,7 +43,7 @@ void write_file(FILE* wfp, unsigned char* output, int size) {
 void base64_encode_file(FILE *fp, FILE* wfp) {
     unsigned char to_encode[3];
     unsigned char encoded[4];
-    char read_c;
+    int read_c;
     int octets_count = 0;
 
     while ((read_c = fgetc(fp)) != EOF) {
@@ -66,7 +66,7 @@ void base64_encode_file(FILE *fp, FILE* wfp) {
 void base64_decode_file(FILE *fp, FILE* wfp) {
     unsigned char to_decode[4];
     unsigned char decoded[3];
-    char read_c;
+    int read_c;
     int sextets_count = 0;
 
     build_base64_decoding();
