@@ -1,16 +1,18 @@
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef BASE64_BASE64_H
+#define BASE64_BASE64_H
 
 #define PADDING_CHAR '='
 
-/*
- * Encodes the given array to base64, returning a NULL terminated string
- * On error returns NULL.
- */
-unsigned char *base64_encode(const unsigned char *input, size_t input_size);
+#include <stdio.h>
 
 /*
- * Decodes the given array from base64, returning a NULL terminated string
- * Returns NULL if the given array is invalid.
+ * Encodes the given fp file to base64 and writes the result in the given wfp file.
  */
-unsigned char *base64_decode(const unsigned char *input, size_t input_size);
+void base64_encode_file(FILE *fp, FILE* wfp);
+
+/*
+ * Decodes the given fp file from base64 and writes the result in the given wfp file.
+ */
+void base64_decode_file(FILE *fp, FILE* wfp);
+
+#endif //BASE64_BASE64_H
