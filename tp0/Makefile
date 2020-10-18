@@ -8,8 +8,8 @@ OBJ = tp0.o base64.o
 
 all: $(EXEC)
 
-run: $(EXEC)
-	./$(EXEC)
+test: $(EXEC)
+	./tests.sh ./$(EXEC)
 
 %.o: %.c %.h
 	$(CC) $(CCFLAGS) -c $<
