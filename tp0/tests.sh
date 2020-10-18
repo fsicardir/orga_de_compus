@@ -30,12 +30,12 @@ test_case() {
 
 test_case 'basic encoding example' 'hola' 'aG9sYQ=='
 
-test_case 'basic decoding example' 'aG9sYQ==' 'hola' '-d'
+test_case 'basic decoding example using -d' 'aG9sYQ==' 'hola' '-d'
 
-test_case 'basic decoding with --decode flag' 'aG9sYQ==' 'hola' '--decode'
+test_case 'basic decoding using --decode' 'aG9sYQ==' 'hola' '--decode'
 
-test_case 'print version with -V' '' 'v0.1.0' '-V'
-test_case 'print version with --version' '' 'v0.1.0' '--version'
+test_case 'print version using -V' '' 'v0.1.0' '-V'
+test_case 'print version using --version' '' 'v0.1.0' '--version'
 
 help_msg="Usage:
    tp0 -h
@@ -49,8 +49,8 @@ Options:
    -d, --Decode a base64-encoded file.
 Examples:
    tp0 -i input.txt -o output.txt"
-test_case 'print help message with -h' '' "$help_msg" '-h'
-test_case 'print help message with --help' '' "$help_msg" '--help'
+test_case 'print help message using -h' '' "$help_msg" '-h'
+test_case 'print help message using --help' '' "$help_msg" '--help'
 
 test_case 'encode string that requires no padding' 'any carnal pleasur' 'YW55IGNhcm5hbCBwbGVhc3Vy'
 
@@ -97,6 +97,20 @@ echo -n "$long_msg_encoded" | $EXEC -d --output "$filename"
 output=$(<$filename)
 result=$(compare "$output" "$long_msg")
 print_result 'decode text to file using --output' "$result"
+
+head -c 5M </dev/urandom >"$filename"
+actual=$($EXEC -i "$filename")
+expected=$(base64 -w 0 "$filename")
+result=$(compare "$actual" "$expected")
+print_result 'encode 5M of random data' "$result"
+
+tr -dc A-Za-z0-9+/ </dev/urandom | head -c 5M > "$filename"
+if diff <($EXEC -d -i "$filename") <(base64 -dw 0 "$filename") &>/dev/null; then
+    result="OK"
+else
+    result="ERROR: difference in binary output"
+fi
+print_result 'decode 5M of random data' "$result"
 
 rm "$filename"
 
