@@ -7,22 +7,22 @@
 #define ERROR 1
 
 void print_version() {
-    printf("%s \n", VERSION);
+    printf("%s\n", VERSION);
 }
 
 void print_help() {
-    printf("Usage: \n"
-           "   tp0 -h \n"
-           "   tp0 -V \n"
-           "   tp0 [options] \n"
-           "Options: \n"
-           "   -V, --version Print version and quit. \n"
-           "   -h, --help Print this information. \n"
-           "   -o, --output Path to the output file. \n"
-           "   -i, --input Path to the input file. \n"
-           "   -d, --Decode a base64-encoded file. \n"
-           "Examples: \n"
-           "   tp0 -i input.txt -o output.txt \n"
+    printf("Usage:\n"
+           "   tp0 -h\n"
+           "   tp0 -V\n"
+           "   tp0 [options]\n"
+           "Options:\n"
+           "   -V, --version Print version and quit.\n"
+           "   -h, --help Print this information.\n"
+           "   -o, --output Path to the output file.\n"
+           "   -i, --input Path to the input file.\n"
+           "   -d, --Decode a base64-encoded file.\n"
+           "Examples:\n"
+           "   tp0 -i input.txt -o output.txt\n"
     );
 }
 
@@ -54,14 +54,14 @@ int main (int argc, char *const *argv) {
             case 'o':
                 wfp = fopen(optarg, "w");
                 if (!wfp) {
-                    fprintf(stderr, "File not found \n");
+                    fprintf(stderr, "File not found\n");
                     return ERROR;
                 }
                 continue;
             case 'i':
                 fp = fopen(optarg, "r");
                 if (!fp) {
-                    fprintf(stderr, "File not found \n");
+                    fprintf(stderr, "File not found\n");
                     return ERROR;
                 }
                 continue;
@@ -69,7 +69,6 @@ int main (int argc, char *const *argv) {
                 is_encode = false;
                 break;
             default:
-                fprintf(stderr, "Invalid arguments \n");
                 return ERROR;
         }
     }
