@@ -73,7 +73,7 @@ void base64_decode_file(FILE *fp, FILE* wfp) {
 
     while ((read_c = fgetc(fp)) != EOF) {
         if (base64_decoding[(unsigned char) read_c] > 63) {
-            fprintf(stderr, "Bad encoded: invalid characters \n");
+            fprintf(stderr, "Bad encoding: invalid characters\n");
             return;
         }
 
@@ -85,6 +85,6 @@ void base64_decode_file(FILE *fp, FILE* wfp) {
     }
 
     if (sextets_count != 0) {
-        fprintf(stderr, "Bad encoded: missing characters \n");
+        fprintf(stderr, "Bad encoding: missing characters\n");
     }
 }
