@@ -4,7 +4,8 @@ CC = gcc
 
 CCFLAGS = -Wall -Wextra -Werror -pedantic --std=c99
 
-OBJ = tp0.o base64.o
+DEPS = tp0.c
+OBJ = base64.o
 
 all: $(EXEC)
 
