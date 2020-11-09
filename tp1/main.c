@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <memory.h>
 #include "mcd.h"
 #include "mcm.h"
 
@@ -75,6 +76,9 @@ int main (int argc, char *const *argv) {
                 print_help();
                 return OK;
             case 'o':
+                if (strcmp(optarg, "-") == 0) {
+                    continue;
+                }
                 wfp = fopen(optarg, "w");
                 if (!wfp) {
                     fprintf(stderr, "Error: file not found.\n");
