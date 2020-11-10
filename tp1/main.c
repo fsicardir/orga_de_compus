@@ -13,11 +13,11 @@
 #define MININT 2
 #define MAXINT 65535 // 2**16 -1
 
-void print_version() {
+static void print_version() {
     printf("%s\n", VERSION);
 }
 
-void print_help() {
+static void print_help() {
     printf("Usage:\n"
            "   common -h\n"
            "   common -V\n"
@@ -33,11 +33,11 @@ void print_help() {
     );
 }
 
-void write_value(FILE *wfp, unsigned int mcd) {
+static void write_value(FILE *wfp, unsigned int mcd) {
     fprintf(wfp, "%u\n", mcd);
 }
 
-unsigned int get_number(char *const s) {
+static unsigned int get_number(char *const s) {
     char *p;
     unsigned int conv = strtol(s, &p, 10);
 
