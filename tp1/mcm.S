@@ -1,9 +1,18 @@
 #include <sys/regdef.h>
 
-#define SS 12
-#define O_RA 8
-#define O_GP 4
-#define O_FP 0
+#define SRA_S 16
+#define LTA_S 0
+#define ABA_S 16
+#define SS (SRA_S + LTA_S + ABA_S)
+
+#define O_A3 (SS + 12) //
+#define O_A2 (SS + 8)  // in caller's ABA
+#define O_A1 (SS + 4)  //
+#define O_A0 SS        //
+
+#define O_RA (ABA_S + LTA_S + 8) //
+#define O_GP (ABA_S + LTA_S + 4) // in it's own SRA
+#define O_FP (ABA_S + LTA_S + 0) //
 
 .text
 .align 2
@@ -24,9 +33,17 @@ mcm:
 
     move fp, sp
 
+    // callee always saves a0 
+    // to a3 in the caller's ABA
+    sw a0, O_A0(sp)
+    sw a1, O_A1(sp)
+    sw a2, O_A2(sp)
+    sw a3, O_A3(sp)
+
     mul s0, a0, a1
 
-    jal mcd
+    la t0, mcd
+    jalr t0
 
     divu s0, v0
 
