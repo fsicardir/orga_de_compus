@@ -21,4 +21,4 @@ $(EXEC): $(OBJ) $(DEPS)
 clean:
 	rm -rf *.o $(EXEC)
 
-.PHONY: all clean
+.PHONY: all test clean
