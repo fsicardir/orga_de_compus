@@ -42,7 +42,7 @@ unsigned int get_number(char *const s) {
     unsigned int conv = strtol(s, &p, 10);
 
     if (errno != 0 || *p != '\0' || conv < MININT || conv > MAXINT) {
-        fprintf(stderr, "Error: numbers must be between %d and %d.\n", MININT, MAXINT);
+        fprintf(stderr, "Error: arguments should be numbers between %d and %d.\n", MININT, MAXINT);
         return 0;
     }
 
@@ -81,7 +81,7 @@ int main (int argc, char *const *argv) {
                 }
                 wfp = fopen(optarg, "w");
                 if (!wfp) {
-                    fprintf(stderr, "Error: file not found.\n");
+                    fprintf(stderr, "Error: could not write to file '%s'.\n", optarg);
                     return ERROR;
                 }
                 continue;
