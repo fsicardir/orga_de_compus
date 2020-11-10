@@ -25,4 +25,4 @@ asm: $(ASM) $(DEPS)
 clean:
 	rm -rf *.o $(EXEC)
 
-.PHONY: all clean asm
+.PHONY: all test clean asm
