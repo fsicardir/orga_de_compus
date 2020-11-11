@@ -92,12 +92,15 @@ int main (int argc, char *const *argv) {
                 calculate_mcd = false;
                 break;
             default:
+                if(wfp != NULL)
+                    fclose(wfp);
                 return ERROR;
         }
     }
 
     if (optind + 2 != argc) {
         fprintf(stderr, "Error: expected two numbers after options.\n");
+        fclose(wfp);
         return ERROR;
     }
 
@@ -105,6 +108,7 @@ int main (int argc, char *const *argv) {
     n = get_number(argv[optind + 1]);
 
     if (m == 0 || n == 0) {
+        fclose(wfp);
         return ERROR;
     }
 
@@ -116,6 +120,7 @@ int main (int argc, char *const *argv) {
         unsigned long long mult = (unsigned long long)m * n;
         if (mult > UINT_MAX) {
             fprintf(stderr, "Error: calculation produces overflow.\n");
+            fclose(wfp);
             return ERROR;
         }
         write_value(wfp, mcm(m, n));
