@@ -47,9 +47,9 @@ mcd:
     sw a1, O_N(sp)
 
 repeat:
-    lw t0, O_M(sp)
     lw t1, O_N(sp)
     beqz t1, end
+    lw t0, O_M(sp)
     divu t0, t1
     mfhi t0
     sw t0, O_N(sp)
