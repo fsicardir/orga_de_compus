@@ -50,9 +50,17 @@ test_case_error() {
 
 }
 
+EXPECTED_BASIC="5
+10"
+test_case 'basic usage: 5, 10' '5 10' "$EXPECTED_BASIC"
+
+EXPECTED_BASIC="1
+1437634"
+test_case 'basic usage: 1111, 1294' '1111 1294' "$EXPECTED_BASIC"
+
 EXPECTED_BASIC="64
 768"
-test_case 'basic usage' '256 192' "$EXPECTED_BASIC"
+test_case 'basic usage: 256, 192' '256 192' "$EXPECTED_BASIC"
 
 test_case 'only mcm with -m flag' '-m 256 192' '768'
 test_case 'only mcm with --multiple flag' '--multiple 256 192' '768'
