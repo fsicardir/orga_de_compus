@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <memory.h>
+#include <limits.h>
 #include "mcd.h"
 #include "mcm.h"
 
@@ -11,7 +12,6 @@
 #define OK 0
 #define ERROR 1
 #define MININT 2
-#define MAXINT 65535 // 2**16 -1
 
 static void print_version() {
     printf("%s\n", VERSION);
@@ -33,16 +33,16 @@ static void print_help() {
     );
 }
 
-static void write_value(FILE *wfp, unsigned int mcd) {
-    fprintf(wfp, "%u\n", mcd);
+static void write_value(FILE *wfp, unsigned int value) {
+    fprintf(wfp, "%u\n", value);
 }
 
 static unsigned int get_number(char *const s) {
     char *p;
-    unsigned int conv = strtol(s, &p, 10);
+    unsigned long conv = strtoul(s, &p, 10);
 
-    if (errno != 0 || *p != '\0' || conv < MININT || conv > MAXINT) {
-        fprintf(stderr, "Error: arguments should be numbers between %d and %d.\n", MININT, MAXINT);
+    if (errno != 0 || *p != '\0' || conv < MININT || conv > INT_MAX) {
+        fprintf(stderr, "Error: arguments should be numbers between %d and %d.\n", MININT, INT_MAX);
         return 0;
     }
 
@@ -92,12 +92,15 @@ int main (int argc, char *const *argv) {
                 calculate_mcd = false;
                 break;
             default:
+                if(wfp != NULL)
+                    fclose(wfp);
                 return ERROR;
         }
     }
 
     if (optind + 2 != argc) {
         fprintf(stderr, "Error: expected two numbers after options.\n");
+        fclose(wfp);
         return ERROR;
     }
 
@@ -105,6 +108,7 @@ int main (int argc, char *const *argv) {
     n = get_number(argv[optind + 1]);
 
     if (m == 0 || n == 0) {
+        fclose(wfp);
         return ERROR;
     }
 
@@ -113,6 +117,12 @@ int main (int argc, char *const *argv) {
     }
 
     if (calculate_mcm) {
+        unsigned long long mult = (unsigned long long)m * n;
+        if (mult > UINT_MAX) {
+            fprintf(stderr, "Error: calculation produces overflow.\n");
+            fclose(wfp);
+            return ERROR;
+        }
         write_value(wfp, mcm(m, n));
     }
 
