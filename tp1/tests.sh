@@ -43,7 +43,7 @@ test_case_error() {
     case="$1"
     arguments="$2"
     expected_output="$3"
-    $EXEC $arguments 2>$OUT_FILE
+    $EXEC $arguments 2>$OUT_FILE >/dev/null
     actual=$(<$OUT_FILE)
     result="$(compare "$expected_output" "$actual")"
     print_result "$case" "$result"
@@ -92,11 +92,22 @@ test_case_error 'error not providing arguments' '' "Error: expected two numbers 
 
 test_case_error 'error providing only one argument' '123' "Error: expected two numbers after options."
 
-test_case_error 'error when argument is not a number' '123 asd' "Error: arguments should be numbers between 2 and 65535."
+INT_MAX=$(grep "define INT_MAX" /usr/include/limits.h | cut -f2)
+test_case_error 'error when argument is not a number' '123 asd' "Error: arguments should be numbers between 2 and $INT_MAX."
 
-test_case_error 'error when argument is zero' '0 123' "Error: arguments should be numbers between 2 and 65535."
+test_case_error 'error when argument is negative' '123 "-2"' "Error: arguments should be numbers between 2 and $INT_MAX."
 
-test_case_error 'error when argument is greater than 65535' '123 100000000' "Error: arguments should be numbers between 2 and 65535."
+test_case_error 'error when argument is zero' '0 123' "Error: arguments should be numbers between 2 and $INT_MAX."
+
+test_case_error 'error when argument is one' '1 123' "Error: arguments should be numbers between 2 and $INT_MAX."
+
+test_case_error "error when argument is greater than $INT_MAX" "123 $(($INT_MAX + 5))" "Error: arguments should be numbers between 2 and $INT_MAX."
+
+EXPECTED_MAX="1
+$(($INT_MAX * 2))"
+test_case "can calculate results bigger than $INT_MAX if there is no overflow" "$INT_MAX 2" "$EXPECTED_MAX"
+
+test_case_error "error when calcualtion overflows an unsigned int" "$INT_MAX $(($INT_MAX - 1))" "Error: calculation produces overflow."
 
 rm $OUT_FILE
 
