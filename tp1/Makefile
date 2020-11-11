@@ -8,7 +8,6 @@ CC_ASM_FLAGS = -mips32 -mlong32
 
 DEPS = main.c
 OBJ = mcm.o mcd.o
-ASM = mcm.S mcd.S
 
 all: $(EXEC)
 
