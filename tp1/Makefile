@@ -1,8 +1,10 @@
 EXEC := common
 
+ARCH = $(shell uname -m)
 CC = gcc
 
-CCFLAGS = -Wall -Wextra -Werror -pedantic --std=c99
+CC_FLAGS = -Wall -Wextra -Werror -pedantic --std=c99
+CC_ASM_FLAGS = -mips32 -mlong32
 
 DEPS = main.c
 OBJ = mcm.o mcd.o
@@ -12,13 +14,18 @@ all: $(EXEC)
 test: $(EXEC)
 	./tests.sh ./$(EXEC)
 
+ifeq ($(ARCH), mips64)
+%.o: %.S %.h
+	$(CC) $(CC_FLAGS) $(CC_ASM_FLAGS) -c $^
+else
 %.o: %.c %.h
-	$(CC) $(CCFLAGS) -c $<
+	$(CC) $(CC_FLAGS) -c $^
+endif
 
 $(EXEC): $(OBJ) $(DEPS)
-	$(CC) $(CCFLAGS) $(OBJ) $(DEPS) -o $(EXEC)
+	$(CC) $(CC_FLAGS) $(OBJ) $(DEPS) -o $(EXEC)
 
 clean:
-	rm -rf *.o $(EXEC)
+	rm -rf *.o *.gch $(EXEC)
 
 .PHONY: all test clean
