@@ -1,18 +1,23 @@
 #include <sys/regdef.h>
 
-#define SRA_S 16
-#define LTA_S 0
-#define ABA_S 16
-#define SS (SRA_S + LTA_S + ABA_S)
+#define SS 32
 
-#define O_A3 (SS + 12) //
-#define O_A2 (SS + 8)  // in caller's ABA
-#define O_A1 (SS + 4)  //
-#define O_A0 SS        //
+/* ABA Caller */
+#define O_A3 44
+#define O_A2 40
+#define O_A1 36
+#define O_A0 32
 
-#define O_RA (ABA_S + LTA_S + 8) //
-#define O_GP (ABA_S + LTA_S + 4) // in it's own SRA
-#define O_FP (ABA_S + LTA_S + 0) //
+/* SRA */
+#define O_RA 24
+#define O_GP 20
+#define O_FP 16
+
+/* ABA */
+#define MCD_A3 12
+#define MCD_A2 8
+#define MCD_A1 4
+#define MCD_A0 0
 
 .text
 .align 2
