@@ -23,7 +23,7 @@ bool cache_create(cache_t *cache, unsigned int ways_number, unsigned int sets_nu
     cache->ways_number = ways_number;
     cache->sets_number = sets_number;
     cache->block_size = block_size;
-    int blocks_number = ways_number * sets_number;
+    unsigned int blocks_number = ways_number * sets_number;
     cache->blocks = malloc(sizeof(cache_block_t) * blocks_number);
     if (cache->blocks == NULL) {
         return false;
@@ -35,7 +35,7 @@ bool cache_create(cache_t *cache, unsigned int ways_number, unsigned int sets_nu
     }
 
     unsigned char *data = cache->data;
-    for (int i = 0; i < blocks_number; ++i) {
+    for (unsigned int i = 0; i < blocks_number; ++i) {
         cache_block_t *block = cache->blocks + i;
         data += block_size;
         cache_block_create(block, data);
@@ -51,10 +51,10 @@ void cache_destroy(cache_t *cache) {
 
 static cache_block_t *cache_get_block(cache_t *cache, 
         unsigned int way_number, unsigned int set_number) {
-    return cache->blocks + (set_number * cache->sets_number + way_number);
+    return cache->blocks + (set_number * cache->ways_number + way_number);
 }
 
-unsigned int cache_find_set(cache_t *cache, int address) {
+unsigned int cache_find_set(cache_t *cache, unsigned int address) {
     return (address / cache->block_size) % cache->sets_number;
 }
 
@@ -77,7 +77,7 @@ bool cache_is_dirty(cache_t *cache, unsigned int way_number, unsigned int set_nu
 }
 
 static unsigned int cache_find_tag(cache_t *cache, unsigned int block_number) {
-    return block_number >> (cache->sets_number);
+    return block_number / (cache->sets_number);
 }
 
 void cache_read_block(cache_t *cache, unsigned int block_number) {
@@ -98,7 +98,7 @@ void cache_write_block(cache_t *cache, unsigned int way_number, unsigned int set
 
 static bool cache_hit(cache_t *cache, unsigned int tag, 
         unsigned int set_number, cache_block_t **block) {
-    for (unsigned int way_number = 1; way_number < cache->ways_number; ++way_number) {
+    for (unsigned int way_number = 0; way_number < cache->ways_number; ++way_number) {
         *block = cache_get_block(cache, way_number, set_number);
         if ((*block)->is_valid && (*block)->tag == tag) {
             return true;
@@ -112,7 +112,7 @@ static unsigned int cache_find_offset(cache_t *cache, unsigned int address) {
 }
 
 static void cache_update_lru_count(cache_t *cache, unsigned int set_number) {
-    for (unsigned int way_number = 1; way_number < cache->ways_number; ++way_number) {
+    for (unsigned int way_number = 0; way_number < cache->ways_number; ++way_number) {
         cache_get_block(cache, way_number, set_number)->lru_count++;
     }
 }

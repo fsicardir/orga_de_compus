@@ -21,7 +21,7 @@ bool cache_create(cache_t *cache, unsigned int ways_number,
 void cache_destroy(cache_t *cache);
 
 
-unsigned int cache_find_set(cache_t *cache, int address);
+unsigned int cache_find_set(cache_t *cache, unsigned int address);
 
 unsigned int cache_find_lru(cache_t *cache, unsigned int set_number);
 

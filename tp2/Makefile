@@ -3,11 +3,12 @@ TEST_EXEC := cache_test
 
 CC = gcc
 
-CCFLAGS = -Wall -Wextra -Werror -pedantic --std=c99
+CCFLAGS = -g -O0 -Wall -Wextra -Werror -pedantic --std=c99
 
 DEPS = main.c
 TEST_DEPS = core_test.c
 OBJ = cache_api.o cache.o
+TEST_OBJ = cache.o
 
 all: $(EXEC)
 
@@ -17,8 +18,8 @@ test: $(EXEC)
 core_test: $(TEST_EXEC)
 	./$(TEST_EXEC)
 
-$(TEST_EXEC): $(OBJ) $(TEST_DEPS)
-	$(CC) $(CCFLAGS) $(OBJ) $(TEST_DEPS) -o $(TEST_EXEC)
+$(TEST_EXEC): $(TEST_OBJ) $(TEST_DEPS)
+	$(CC) $(CCFLAGS) $(TEST_OBJ) $(TEST_DEPS) -o $(TEST_EXEC)
 
 %.o: %.c %.h
 	$(CC) $(CCFLAGS) -c $<
