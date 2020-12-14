@@ -7,15 +7,15 @@ typedef struct cache {
     unsigned char *main_memory;
     unsigned int miss_count; 
     unsigned int hit_count; 
-    unsigned int ways_number;
-    unsigned int sets_number;
+    unsigned int ways_count;
+    unsigned int sets_count;
     unsigned int block_size;
     cache_block_t *blocks;
     unsigned char *data;
 } cache_t;
 
-bool cache_create(cache_t *cache, unsigned int ways_number, 
-        unsigned int sets_number, unsigned int block_size,
+bool cache_create(cache_t *cache, unsigned int ways_count, 
+        unsigned int sets_count, unsigned int block_size,
         unsigned char *main_memory);
 
 void cache_destroy(cache_t *cache);
