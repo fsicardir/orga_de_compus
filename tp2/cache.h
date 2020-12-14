@@ -20,16 +20,17 @@ bool cache_create(cache_t *cache, unsigned int ways_count,
 
 void cache_destroy(cache_t *cache);
 
-
 unsigned int cache_find_set(cache_t *cache, unsigned int address);
 
 unsigned int cache_find_lru(cache_t *cache, unsigned int set_number);
 
-bool cache_is_dirty(cache_t *cache, unsigned int way_number, unsigned int set_number);
+bool cache_is_dirty(cache_t *cache, unsigned int way_number, 
+        unsigned int set_number);
 
 void cache_read_block(cache_t *cache, unsigned int block_number);
 
-void cache_write_block(cache_t *cache, unsigned int way_number, unsigned int set_number);
+void cache_write_block(cache_t *cache, unsigned int way_number, 
+        unsigned int set_number);
 
 unsigned char cache_read_byte(cache_t *cache, unsigned int address);
 

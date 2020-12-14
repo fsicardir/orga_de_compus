@@ -4,9 +4,9 @@
 
 #define MAIN_MEMORY_SIZE (64 * 1024)
 
-unsigned char main_memory[MAIN_MEMORY_SIZE] = { 0 };
+static unsigned char main_memory[MAIN_MEMORY_SIZE] = { 0 };
 
-cache_t cache;
+static cache_t cache;
 
 void init() {
     int sets_number = (cache_size * 1024) / (ways_number * block_size);
@@ -47,3 +47,4 @@ void write_byte(int address, unsigned char value) {
 int get_miss_rate() {
     return cache_get_miss_rate(&cache);
 }
+
