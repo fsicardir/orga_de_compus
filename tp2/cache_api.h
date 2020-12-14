@@ -7,6 +7,8 @@ int ways_number;
 
 void init();
 
+void shutdown();
+
 unsigned int find_set(int address);
 
 unsigned int find_lru(int setnum);
