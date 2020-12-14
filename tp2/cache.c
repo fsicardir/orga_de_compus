@@ -1,5 +1,4 @@
 #include "cache.h"
-#include "util.c"
 #include <string.h>
 
 struct cache_block {
