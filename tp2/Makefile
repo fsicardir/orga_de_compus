@@ -26,6 +26,6 @@ $(EXEC): $(OBJ) $(DEPS)
 	$(CC) $(CCFLAGS) $(OBJ) $(DEPS) -o $(EXEC)
 
 clean:
-	rm -rf *.o $(EXEC)
+	rm -rf *.o $(EXEC) $(TEST_EXEC)
 
 .PHONY: all clean
