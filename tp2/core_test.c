@@ -1,8 +1,10 @@
 #include "cache.h"
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAIN_MEMORY_SIZE (64 * 1024)
+#define RANDOM_RUNS 1000000
 
 static unsigned char main_memory[MAIN_MEMORY_SIZE] = { 0 };
 static cache_t cache;
@@ -174,23 +176,69 @@ static void test_uses_same_way() {
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
-    cache_write_byte(&cache, 0, 255);
-    assert(cache_is_dirty(&cache, 0, 0));
-    cache_write_byte(&cache, 16384, 254);
-    assert(cache_is_dirty(&cache, 0, 0));
+    cache_write_byte(&cache, 216, 255);
+    assert(cache_is_dirty(&cache, 1, 0));
+    cache_write_byte(&cache, 16600, 254);
+    assert(cache_is_dirty(&cache, 1, 0));
 
-    assert(cache_read_byte(&cache, 0) == 255);
-    assert(!cache_is_dirty(&cache, 0, 0));
-    assert(main_memory[0] == 255);
-    assert(cache_read_byte(&cache, 16384) == 254);
-    assert(main_memory[16384] == 254);
-    assert(!cache_is_dirty(&cache, 0, 0));
+    assert(cache_read_byte(&cache, 216) == 255);
+    assert(!cache_is_dirty(&cache, 1, 0));
+    assert(main_memory[216] == 255);
+    assert(cache_read_byte(&cache, 16600) == 254);
+    assert(main_memory[16600] == 254);
+    assert(!cache_is_dirty(&cache, 1, 0));
 
     assert(cache_get_miss_rate(&cache) == 100);
 
     cache_destroy(&cache);
 
     printf("Reuses same way... OK!\n");
+}
+
+static void test_uses_same_tag_different_set() {
+    unsigned int ways_count = 1;
+    unsigned int sets_count = 128;
+    unsigned int block_size = 128;
+
+    cache_create(&cache, ways_count, sets_count, block_size, main_memory);
+    
+    cache_write_byte(&cache, 0, 255);
+    assert(cache_is_dirty(&cache, 0, 0));
+    cache_write_byte(&cache, 129, 254);
+    assert(cache_is_dirty(&cache, 0, 0));
+
+    assert(cache_read_byte(&cache, 0) == 255);
+    assert(cache_is_dirty(&cache, 0, 0));
+    assert(cache_read_byte(&cache, 129) == 254);
+    assert(cache_is_dirty(&cache, 0, 0));
+
+    assert(cache_get_miss_rate(&cache) == 50);
+
+    cache_destroy(&cache);
+
+    printf("Uses same tag, different set... OK!\n");
+}
+
+
+static void test_random_reads_and_writes() {
+
+    unsigned int ways_count = 2;
+    unsigned int sets_count = 128;
+    unsigned int block_size = 128;
+
+    cache_create(&cache, ways_count, sets_count, block_size, main_memory);
+    
+    srand((unsigned long int)&main_memory);
+    for (size_t i = 0; i < RANDOM_RUNS; ++i) {
+        unsigned int addr = rand() % MAIN_MEMORY_SIZE; 
+        unsigned char value = rand();
+        cache_write_byte(&cache, addr, value);
+        assert(cache_read_byte(&cache, addr) == value);
+    }
+
+    cache_destroy(&cache);
+
+    printf("Random reads and writes... OK!\n");
 }
 
 int main() {
@@ -201,6 +249,8 @@ int main() {
     test_uses_same_block();
     test_uses_all_ways_of_set();
     test_uses_same_way();
+    test_uses_same_tag_different_set();
+    test_random_reads_and_writes();
     return 0;
 }
 

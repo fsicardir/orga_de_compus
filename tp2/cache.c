@@ -17,12 +17,12 @@ static void cache_block_create(cache_block_t *cache_block, unsigned char* data) 
     cache_block->data = data;
 }
 
-static void cache_init_blocks(cache_t * cache, unsigned int blocks_count) {
+static void cache_init_blocks(cache_t *cache, unsigned int blocks_count) {
     unsigned char *data = cache->data;
     for (unsigned int i = 0; i < blocks_count; ++i) {
         cache_block_t *block = cache->blocks + i;
-        data += cache->block_size;
         cache_block_create(block, data);
+        data += cache->block_size;
     }
 }
 
@@ -98,7 +98,7 @@ void cache_read_block(cache_t *cache, unsigned int block_number) {
 
 void cache_write_block(cache_t *cache, unsigned int way_number, unsigned int set_number) {
     cache_block_t *block = cache_find_block(cache, way_number, set_number);
-    unsigned int address = block->tag * cache->sets_count * cache->block_size;
+    unsigned int address = (block->tag * cache->sets_count + set_number) * cache->block_size;
     memcpy(cache->main_memory + address, block->data, cache->block_size);
 }
 
