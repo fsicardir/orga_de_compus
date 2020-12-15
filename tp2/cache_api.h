@@ -1,5 +1,5 @@
-#ifndef CACHE_H
-#define CACHE_H
+#ifndef CACHE_API_H
+#define CACHE_API_H
 
 unsigned int cache_size;
 unsigned int block_size;
@@ -25,4 +25,4 @@ void write_byte(int address, unsigned char value);
 
 int get_miss_rate();
 
-#endif // CACHE_H
+#endif // CACHE_API_H

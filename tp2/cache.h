@@ -1,3 +1,6 @@
+#ifndef CACHE_H
+#define CACHE_H
+
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -37,3 +40,5 @@ unsigned char cache_read_byte(cache_t *cache, unsigned int address);
 void cache_write_byte(cache_t *cache, unsigned int address, unsigned char value);
 
 unsigned int cache_get_miss_rate(cache_t *cache);
+
+#endif // CACHE_H
