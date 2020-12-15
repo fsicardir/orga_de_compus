@@ -98,7 +98,7 @@ void cache_read_block(cache_t *cache, unsigned int block_number) {
 
 void cache_write_block(cache_t *cache, unsigned int way_number, unsigned int set_number) {
     cache_block_t *block = cache_find_block(cache, way_number, set_number);
-    unsigned int address = ((block->tag << cache->sets_count) & set_number);
+    unsigned int address = block->tag * cache->sets_count * cache->block_size;
     memcpy(cache->main_memory + address, block->data, cache->block_size);
 }
 

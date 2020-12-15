@@ -4,13 +4,13 @@
 
 #define MAIN_MEMORY_SIZE (64 * 1024)
 
-unsigned char main_memory[MAIN_MEMORY_SIZE] = { 0 };
+static unsigned char main_memory[MAIN_MEMORY_SIZE] = { 0 };
+static cache_t cache;
 
-static void testcase_1() {
+static void test_case_1() {
     unsigned int ways_count = 4;
     unsigned int sets_count = 32;
     unsigned int block_size = 32;
-    cache_t cache;
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
@@ -24,19 +24,17 @@ static void testcase_1() {
     cache_read_byte(&cache, 32768);
     cache_read_byte(&cache, 49152);
 
-    printf("miss rate: %d\n", cache_get_miss_rate(&cache));
     assert(cache_get_miss_rate(&cache) == 50);
 
     cache_destroy(&cache);
 
-    printf("Test 1 OK!\n");
+    printf("Test case 1... OK!\n");
 }
 
-static void testcase_2() {
+static void test_case_2() {
     unsigned int ways_count = 1;
     unsigned int sets_count = 128;
     unsigned int block_size = 128;
-    cache_t cache;
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
@@ -50,19 +48,17 @@ static void testcase_2() {
     cache_read_byte(&cache, 32768);
     cache_read_byte(&cache, 49152);
 
-    printf("miss rate: %d\n", cache_get_miss_rate(&cache));
     assert(cache_get_miss_rate(&cache) == 100);
 
     cache_destroy(&cache);
 
-    printf("Test 2 OK!\n");
+    printf("Test case 2... OK!\n");
 }
 
-static void testcase_3() {
+static void test_case_3() {
     unsigned int ways_count = 4;
     unsigned int sets_count = 32;
     unsigned int block_size = 32;
-    cache_t cache;
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
@@ -78,19 +74,17 @@ static void testcase_3() {
     cache_read_byte(&cache, 3072);
     cache_read_byte(&cache, 4096);
 
-    printf("miss rate: %d\n", cache_get_miss_rate(&cache));
     assert(cache_get_miss_rate(&cache) == 100);
 
     cache_destroy(&cache);
 
-    printf("Test 3 OK!\n");
+    printf("Test case 3... OK!\n");
 }
 
-static void testcase_4() {
+static void test_case_4() {
     unsigned int ways_count = 1;
     unsigned int sets_count = 128;
     unsigned int block_size = 128;
-    cache_t cache;
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
@@ -106,19 +100,17 @@ static void testcase_4() {
     cache_read_byte(&cache, 3072);
     cache_read_byte(&cache, 4096);
 
-    printf("miss rate: %d\n", cache_get_miss_rate(&cache));
     assert(cache_get_miss_rate(&cache) == 50);
 
     cache_destroy(&cache);
 
-    printf("Test 4 OK!\n");
+    printf("Test case 4... OK!\n");
 }
 
-static void testcase_5() {
+static void test_case_5() {
     unsigned int ways_count = 1;
     unsigned int sets_count = 128;
     unsigned int block_size = 128;
-    cache_t cache;
 
     cache_create(&cache, ways_count, sets_count, block_size, main_memory);
     
@@ -134,20 +126,81 @@ static void testcase_5() {
     cache_read_byte(&cache, 3);
     cache_read_byte(&cache, 4);
 
-    printf("miss rate: %d\n", cache_get_miss_rate(&cache));
     assert(cache_get_miss_rate(&cache) == 10);
 
     cache_destroy(&cache);
 
-    printf("Test 5 OK!\n");
+    printf("Test case 5... OK!\n");
+}
+
+static void test_uses_all_ways_of_set() {
+    unsigned int ways_count = 4;
+    unsigned int sets_count = 32;
+    unsigned int block_size = 32;
+
+    cache_create(&cache, ways_count, sets_count, block_size, main_memory);
+    
+    cache_write_byte(&cache, 0, 255);
+    assert(cache_is_dirty(&cache, 0, 0));
+    cache_write_byte(&cache, 16384, 254);
+    assert(cache_is_dirty(&cache, 1, 0));
+    cache_write_byte(&cache, 32768, 248);
+    assert(cache_is_dirty(&cache, 2, 0));
+    cache_write_byte(&cache, 49152, 96);
+    assert(cache_is_dirty(&cache, 3, 0));
+
+    assert(cache_get_miss_rate(&cache) == 100);
+
+    assert(cache_read_byte(&cache, 0) == 255);
+    assert(cache_is_dirty(&cache, 0, 0));
+    assert(cache_read_byte(&cache, 16384) == 254);
+    assert(cache_is_dirty(&cache, 1, 0));
+    assert(cache_read_byte(&cache, 32768) == 248);
+    assert(cache_is_dirty(&cache, 2, 0));
+    assert(cache_read_byte(&cache, 49152) == 96);
+    assert(cache_is_dirty(&cache, 3, 0));
+
+    assert(cache_get_miss_rate(&cache) == 50);
+
+    cache_destroy(&cache);
+
+    printf("Uses all ways of set... OK!\n");
+}
+
+static void test_uses_same_way() {
+    unsigned int ways_count = 1;
+    unsigned int sets_count = 128;
+    unsigned int block_size = 128;
+
+    cache_create(&cache, ways_count, sets_count, block_size, main_memory);
+    
+    cache_write_byte(&cache, 0, 255);
+    assert(cache_is_dirty(&cache, 0, 0));
+    cache_write_byte(&cache, 16384, 254);
+    assert(cache_is_dirty(&cache, 0, 0));
+
+    assert(cache_read_byte(&cache, 0) == 255);
+    assert(!cache_is_dirty(&cache, 0, 0));
+    assert(main_memory[0] == 255);
+    assert(cache_read_byte(&cache, 16384) == 254);
+    assert(main_memory[16384] == 254);
+    assert(!cache_is_dirty(&cache, 0, 0));
+
+    assert(cache_get_miss_rate(&cache) == 100);
+
+    cache_destroy(&cache);
+
+    printf("Reuses same way... OK!\n");
 }
 
 int main() {
-    testcase_1();
-    testcase_2();
-    testcase_3();
-    testcase_4();
-    testcase_5();
+    test_case_1();
+    test_case_2();
+    test_case_3();
+    test_case_4();
+    test_case_5();
+    test_uses_all_ways_of_set();
+    test_uses_same_way();
     return 0;
 }
 
