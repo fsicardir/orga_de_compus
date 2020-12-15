@@ -5,5 +5,6 @@ int main() {
     block_size = 128;
     ways_number = 4;
     init();
+    shutdown();
     return 0;
 }
