@@ -107,7 +107,7 @@ static void test_case_4() {
     printf("Test case 4... OK!\n");
 }
 
-static void test_case_5() {
+static void test_uses_same_block() {
     unsigned int ways_count = 1;
     unsigned int sets_count = 128;
     unsigned int block_size = 128;
@@ -130,7 +130,7 @@ static void test_case_5() {
 
     cache_destroy(&cache);
 
-    printf("Test case 5... OK!\n");
+    printf("Uses same block... OK!\n");
 }
 
 static void test_uses_all_ways_of_set() {
@@ -198,7 +198,7 @@ int main() {
     test_case_2();
     test_case_3();
     test_case_4();
-    test_case_5();
+    test_uses_same_block();
     test_uses_all_ways_of_set();
     test_uses_same_way();
     return 0;
