@@ -30,7 +30,7 @@ static void test_case_1() {
 
     cache_destroy(&cache);
 
-    printf("Test case 1... OK!\n");
+    printf("Test case 1...\tOK\n");
 }
 
 static void test_case_2() {
@@ -54,7 +54,7 @@ static void test_case_2() {
 
     cache_destroy(&cache);
 
-    printf("Test case 2... OK!\n");
+    printf("Test case 2...\tOK\n");
 }
 
 static void test_case_3() {
@@ -80,7 +80,7 @@ static void test_case_3() {
 
     cache_destroy(&cache);
 
-    printf("Test case 3... OK!\n");
+    printf("Test case 3...\tOK\n");
 }
 
 static void test_case_4() {
@@ -106,7 +106,7 @@ static void test_case_4() {
 
     cache_destroy(&cache);
 
-    printf("Test case 4... OK!\n");
+    printf("Test case 4...\tOK\n");
 }
 
 static void test_uses_same_block() {
@@ -132,7 +132,7 @@ static void test_uses_same_block() {
 
     cache_destroy(&cache);
 
-    printf("Uses same block... OK!\n");
+    printf("Uses same block...\tOK\n");
 }
 
 static void test_uses_all_ways_of_set() {
@@ -166,7 +166,7 @@ static void test_uses_all_ways_of_set() {
 
     cache_destroy(&cache);
 
-    printf("Uses all ways of set... OK!\n");
+    printf("Uses all ways of set...\tOK\n");
 }
 
 static void test_uses_same_way() {
@@ -192,7 +192,7 @@ static void test_uses_same_way() {
 
     cache_destroy(&cache);
 
-    printf("Reuses same way... OK!\n");
+    printf("Reuses same way...\tOK\n");
 }
 
 static void test_uses_same_tag_different_set() {
@@ -216,7 +216,7 @@ static void test_uses_same_tag_different_set() {
 
     cache_destroy(&cache);
 
-    printf("Uses same tag, different set... OK!\n");
+    printf("Uses same tag, different set...\tOK\n");
 }
 
 
@@ -238,7 +238,7 @@ static void test_random_reads_and_writes() {
 
     cache_destroy(&cache);
 
-    printf("Random reads and writes... OK!\n");
+    printf("Random reads and writes...\tOK\n");
 }
 
 int main() {
