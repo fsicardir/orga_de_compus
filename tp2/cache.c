@@ -130,23 +130,29 @@ static void cache_update_lru_count(cache_t *cache, unsigned int set_number,
     }
 }
 
-static cache_block_t *cache_get_block(cache_t *cache, unsigned int address) {
-    unsigned int block_number = address / cache->block_size;
-    unsigned int set_number = cache_find_set(cache, address);
-    unsigned int tag = cache_find_tag(cache, block_number);
-    cache_block_t *block;
-    if (cache_evaluate_hit(cache, tag, set_number, &block)) {
-        cache->hit_count++;
-    } else {
-        cache->miss_count++;
+static cache_block_t *cache_fetch_missing_block(cache_t *cache, 
+        unsigned int block_number, unsigned int set_number) {
         unsigned int way_number = cache_find_lru(cache, set_number);
-        block = cache_find_block(cache, way_number, set_number);
+        cache_block_t *block = cache_find_block(cache, way_number, set_number);
         if (block->is_valid && block->is_dirty) {
             cache_write_block(cache, way_number, set_number);
         }
         cache_read_block(cache, block_number);
         block->is_dirty = false;
         block->is_valid = true;
+        return block;
+}
+
+static cache_block_t *cache_get_block(cache_t *cache, unsigned int address) {
+    unsigned int set_number = cache_find_set(cache, address);
+    unsigned int block_number = address / cache->block_size;
+    unsigned int tag = cache_find_tag(cache, block_number);
+    cache_block_t *block;
+    if (cache_evaluate_hit(cache, tag, set_number, &block)) {
+        cache->hit_count++;
+    } else {
+        cache->miss_count++;
+        block = cache_fetch_missing_block(cache, block_number, set_number);
     }
     cache_update_lru_count(cache, set_number, block);
     return block;
