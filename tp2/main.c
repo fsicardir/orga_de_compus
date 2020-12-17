@@ -62,6 +62,7 @@ void parse_and_execute_commands(FILE *output_fd, FILE *input_fd) {
     char *token;
     char *hit_or_miss;
     unsigned char read_value;
+
     while (fgets(line, sizeof(line), input_fd)) {
         token = strtok(line, delimiters);
 
@@ -81,6 +82,7 @@ void parse_and_execute_commands(FILE *output_fd, FILE *input_fd) {
         } else {
             fprintf(stderr, "Error parsing line %d.\n", n_line);
         }
+
         n_line++;
     }
 }
