@@ -48,3 +48,6 @@ int get_miss_rate() {
     return cache_get_miss_rate(&cache);
 }
 
+bool is_last_op_hit() {
+    return cache_is_last_op_hit(&cache);
+}

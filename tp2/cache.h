@@ -15,6 +15,7 @@ typedef struct cache {
     unsigned int block_size;
     cache_block_t *blocks;
     unsigned char *data;
+    bool is_last_op_hit;
 } cache_t;
 
 bool cache_create(cache_t *cache, unsigned int ways_count, 
@@ -40,5 +41,7 @@ unsigned char cache_read_byte(cache_t *cache, unsigned int address);
 void cache_write_byte(cache_t *cache, unsigned int address, unsigned char value);
 
 unsigned int cache_get_miss_rate(cache_t *cache);
+
+bool cache_is_last_op_hit(cache_t *cache);
 
 #endif // CACHE_H

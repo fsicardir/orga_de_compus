@@ -1,6 +1,8 @@
 #ifndef CACHE_API_H
 #define CACHE_API_H
 
+#include <stdbool.h>
+
 unsigned int cache_size;
 unsigned int block_size;
 int ways_number;
@@ -24,5 +26,7 @@ unsigned char read_byte(int address);
 void write_byte(int address, unsigned char value);
 
 int get_miss_rate();
+
+bool is_last_op_hit();
 
 #endif // CACHE_API_H

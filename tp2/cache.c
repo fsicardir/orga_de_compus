@@ -46,6 +46,7 @@ bool cache_create(cache_t *cache, unsigned int ways_count,
     }
     cache_init_blocks(cache, blocks_count);
     cache->main_memory = main_memory;
+    cache->is_last_op_hit = false;
     return true;
 }
 
@@ -150,8 +151,10 @@ static cache_block_t *cache_get_block(cache_t *cache, unsigned int address) {
     cache_block_t *block;
     if (cache_evaluate_hit(cache, tag, set_number, &block)) {
         cache->hit_count++;
+        cache->is_last_op_hit = true;
     } else {
         cache->miss_count++;
+        cache->is_last_op_hit = false;
         block = cache_fetch_missing_block(cache, block_number, set_number);
     }
     cache_update_lru_count(cache, set_number, block);
@@ -173,4 +176,8 @@ void cache_write_byte(cache_t *cache, unsigned int address, unsigned char value)
 
 unsigned int cache_get_miss_rate(cache_t *cache) {
     return (cache->miss_count * 100) / (cache->miss_count + cache->hit_count);
+}
+
+bool cache_is_last_op_hit(cache_t *cache) {
+    return cache->is_last_op_hit;
 }
