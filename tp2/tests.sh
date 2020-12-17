@@ -61,16 +61,16 @@ test_case 'Show version with --version flag' '--version' 'v0.1.0'
 EXPECTED_USAGE="Usage:
    tp2 -h
    tp2 -V
-   tp2 [options] file
-Options:
-   -h, --help	Prints usage information.
-   -V, --version	Prints version information.
-   -o, --output	Path to output file.
-   -w, --ways	Number of ways.
-   -c, --cachesize	Cache size in kilobytes.
-   -b, --blocksize	Block size in bytes.
-Examples:
-   tp2 -w 4 -cs 8 -bs 16 prueba1.mem"
+   tp2 [options] archivo
+  Options:
+   -h, --help Imprime ayuda.
+   -V, --version  Versión del programa.
+   -o, --output Archivo de salida.
+   -w, --ways Cantidad de vías.
+   -c, --cachesize  Tamaño del caché en kilobytes.
+   -b, --blocksize  Tamaño del bloque en bytes.
+  Examples:
+   tp2 -w 4 -c 8 -b 16 assets/prueba1.mem"
 
 test_case 'Show help with -h flag' '-h' "$EXPECTED_USAGE"
 test_case 'Show help with --help flag' '--help' "$EXPECTED_USAGE"
