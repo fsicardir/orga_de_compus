@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <memory.h>
 #include <limits.h>
+#include <string.h>
 
 #define VERSION "v0.1.0"
 #define OK 0
@@ -28,16 +28,16 @@ static void print_help() {
            "   -c, --cachesize\tTamaño del caché en kilobytes.\n"
            "   -b, --blocksize\tTamaño del bloque en bytes.\n"
            "Examples:\n"
-           "   tp2 -w 4 -cs 8 -bs 16 assets/prueba1.mem\n"
+           "   tp2 -w 4 -c 8 -b 16 assets/prueba1.mem\n"
     );
 }
 
-static unsigned int get_number(char *const s) {
+static unsigned int get_number(char *const s, unsigned long min_int) {
     char *p;
     unsigned long conv = strtoul(s, &p, 10);
 
-    if (errno != 0 || *p != '\0' || conv < 1 || conv > INT_MAX) {
-        fprintf(stderr, "Error: arguments should be numbers between %d and %d.\n", 1, INT_MAX);
+    if (errno != 0 || *p != '\0' || conv < min_int || conv > INT_MAX) {
+        fprintf(stderr, "Error: arguments should be numbers between %lu and %d.\n", min_int, INT_MAX);
         return 0;
     }
 
@@ -45,12 +45,51 @@ static unsigned int get_number(char *const s) {
 }
 
 static unsigned int get_power_of_two(char * const s) {
-    unsigned int value = get_number(s);
+    unsigned int value = get_number(s, 1);
     if (value % 2 != 0) {
         fprintf(stderr, "Error: cache and block sizes should be powers of two.\n");
         return 0;
     }
      return value;
+}
+
+void parse_and_execute_commands(FILE *output_fd, FILE *input_fd) {
+    char line[18];
+    int n_line = 1;
+    char *raw_address;
+    char *raw_value;
+    const char delimiters[] = ", \n";
+    char *token;
+    char *hit_or_miss;
+    unsigned char read_value;
+
+    init();
+    while (fgets(line, sizeof(line), input_fd)) {
+        token = strtok(line, delimiters);
+
+        if (strcmp("init", token) == 0) {
+            shutdown();
+            init();
+        } else if (strcmp("R", token) == 0) {
+            raw_address = strtok(NULL, delimiters);
+            read_value = read_byte(get_number(raw_address, 0));
+            hit_or_miss = (is_last_op_hit()) ? "hit" : "miss";
+            fprintf(output_fd,"%u %s\n", read_value, hit_or_miss);
+        } else if (strcmp("W", token) == 0) {
+            raw_address = strtok(NULL, delimiters);
+            raw_value = strtok(NULL, delimiters);
+            write_byte(get_number(raw_address, 0), get_number(raw_value, 0));
+            hit_or_miss = (is_last_op_hit()) ? "hit" : "miss";
+            fprintf(output_fd,"%s\n", hit_or_miss);
+        } else if (strcmp("MR", token) == 0) {
+            fprintf(output_fd, "%d\n", get_miss_rate());
+        } else {
+            fprintf(stderr, "Error parsing line %d.\n", n_line);
+        }
+
+        n_line++;
+    }
+    shutdown();
 }
 
 int main (int argc, char *const *argv) {
@@ -90,7 +129,7 @@ int main (int argc, char *const *argv) {
                 }
                 continue;
             case 'w':
-                ways_number = get_number(optarg);
+                ways_number = get_number(optarg, 1);
                 ways_present = true;
                 break;
             case 'c':
@@ -132,8 +171,7 @@ int main (int argc, char *const *argv) {
         return ERROR;
     }
 
-    init();
-    shutdown();
+    parse_and_execute_commands(output_fd, input_fd);
 
     fclose(output_fd);
     fclose(input_fd);
