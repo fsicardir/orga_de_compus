@@ -28,7 +28,7 @@ static void print_help() {
            "   -c, --cachesize\tTamaño del caché en kilobytes.\n"
            "   -b, --blocksize\tTamaño del bloque en bytes.\n"
            "Examples:\n"
-           "   tp2 -w 4 -cs 8 -bs 16 assets/prueba1.mem\n"
+           "   tp2 -w 4 -c 8 -b 16 assets/prueba1.mem\n"
     );
 }
 
@@ -133,6 +133,14 @@ int main (int argc, char *const *argv) {
     }
 
     init();
+
+    char line[18];
+    while (fgets(line, sizeof(line), input_fd)) {
+        /* note that fgets don't strip the terminating \n, checking its
+           presence would allow to handle lines longer that sizeof(line) */
+        printf("%s", line);
+    }
+
     shutdown();
 
     fclose(output_fd);
