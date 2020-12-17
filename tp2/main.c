@@ -63,10 +63,14 @@ void parse_and_execute_commands(FILE *output_fd, FILE *input_fd) {
     char *hit_or_miss;
     unsigned char read_value;
 
+    init();
     while (fgets(line, sizeof(line), input_fd)) {
         token = strtok(line, delimiters);
 
-        if (strcmp("R", token) == 0) {
+        if (strcmp("init", token) == 0) {
+            shutdown();
+            init();
+        } else if (strcmp("R", token) == 0) {
             raw_address = strtok(NULL, delimiters);
             read_value = read_byte(get_number(raw_address, 0));
             hit_or_miss = (is_last_op_hit()) ? "hit" : "miss";
@@ -85,6 +89,7 @@ void parse_and_execute_commands(FILE *output_fd, FILE *input_fd) {
 
         n_line++;
     }
+    shutdown();
 }
 
 int main (int argc, char *const *argv) {
@@ -166,9 +171,7 @@ int main (int argc, char *const *argv) {
         return ERROR;
     }
 
-    init();
     parse_and_execute_commands(output_fd, input_fd);
-    shutdown();
 
     fclose(output_fd);
     fclose(input_fd);
