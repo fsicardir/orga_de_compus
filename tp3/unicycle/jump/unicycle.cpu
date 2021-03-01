@@ -807,24 +807,10 @@
       }
     },
     {
-      "from": "Control",
+      "from": "ALUControl",
       "out": "JumpReg",
       "to": "MuxJumpReg",
-      "in": "JumpReg",
-      "start": {
-        "x": 280,
-        "y": 145
-      },
-      "points": [
-        {
-          "x": 637,
-          "y": 145
-        }
-      ],
-      "end": {
-        "x": 637,
-        "y": 53
-      }
+      "in": "JumpReg"
     },
     {
       "from": "DistImm",

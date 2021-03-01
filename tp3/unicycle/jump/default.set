@@ -245,12 +245,12 @@
         "reg"
       ],
       "fields": {
-        "op": 3,
+        "op": 0,
         "rs": "#1",
         "rt": 0,
         "rd": 0,
         "shamt": 0,
-        "func": 0
+        "func": 8
       },
       "desc": "PC = $t1"
     }
@@ -371,9 +371,6 @@
       "ALUSrc": 0,
       "MemToReg": 0
     },
-    "3": {
-      "JumpReg": 1
-    },
     "8": {
       "RegDst": 0,
       "RegWrite": 1,
@@ -423,6 +420,14 @@
         "aluop": 1,
         "out": {
           "Operation": 6
+        }
+      },
+      {
+        "aluop": 2,
+        "func": 8,
+        "out": {
+          "Operation": 2,
+          "JumpReg": 1
         }
       },
       {
