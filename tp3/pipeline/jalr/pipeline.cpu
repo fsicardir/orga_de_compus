@@ -45,7 +45,7 @@
     
 	"OrJump":     {"type": "Or", "x": 600, "y": 148, "in1": "Jump", "in2": "Branch", "out": "Flush"},
     "ForkJumpR":  {"type": "Fork", "x": 585, "y": 160, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
-    "ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
+    "ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2", "Out3"]},
     "ForkEXR1":   {"type": "Fork", "x": 575, "y": 360, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
     "DataMem":    {"type": "DataMemory", "latency": 400, "x": 580, "y": 242, "size": 100, "address": "Address", "write_data": "WriteData", "out": "ReadData", "mem_read": "MemRead", "mem_write": "MemWrite"},
     "AndBranch":  {"type": "And", "x": 600, "y": 180, "in1": "Branch", "in2": "Zero", "out": "Branch", "desc": {"default": "Determines if a branch should occur.", "pt": "Determina se um branch será efectuado."}},
@@ -56,6 +56,7 @@
     "ForkBr2":    {"type": "Fork", "x": 397, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
     "ForkBr3":    {"type": "Fork", "x": 185, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
     "OrFlush":    {"type": "Or", "x": 375, "y": 70, "in1": "Stall", "in2": "Branch", "out": "Flush"},
+	"MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 600, "y": 70, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Target", "desc": {"default": "Selects jump address or branch address as the new PC."}},
     
     "MEM/WB":     {"type": "PipelineRegister", "x": 680, "y": 110, "regs": {"Result": 32, "ReadData": 32, "RegBankDst": 5, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente."}},
     
@@ -161,7 +162,6 @@
     {"from": "ForkEXR2", "out": "Out1", "to": "MuxFwdA", "in": "2", "points": [{"x": 421, "y": 259}], "end": {"x": 425, "y": 259}},
     {"from": "EX/MEM", "out": "ReadData2", "to": "DataMem", "in": "WriteData", "start": {"x": 565, "y": 308}},
     {"from": "DataMem", "out": "ReadData", "to": "MEM/WB", "in": "ReadData", "end": {"x": 680, "y": 292}},
-    {"from": "EX/MEM", "out": "Target", "to": "MuxPC", "in": "1", "start": {"x": 565, "y": 181}, "points": [{"x": 575, "y": 181}, {"x": 575, "y": 67}, {"x": 5, "y": 67}, {"x": 5, "y": 270}]},
     {"from": "EX/MEM", "out": "Zero", "to": "AndBranch", "in": "Zero", "start": {"x": 565, "y": 255}, "points": [{"x": 572, "y": 255}, {"x": 572, "y": 200}]},
     {"from": "EX/MEM", "out": "Branch", "to": "AndBranch", "in": "Branch", "start": {"x": 565, "y": 145}, "points": [{"x": 580, "y": 145}, {"x": 580, "y": 190}]},
     {"from": "AndBranch", "out": "Branch", "to": "OrJump", "in": "Branch", "end": {"x": 600, "y": 170}, "points": [{"x": 640, "y": 195}, {"x": 640, "y": 220}, {"x": 595, "y": 220}, {"x": 595, "y": 170}]},
@@ -180,6 +180,10 @@
     {"from": "ForkRegWR1", "out": "Out1", "to": "MEM/WB", "in": "RegWrite", "end": {"x": 680, "y": 125}},
     {"from": "ForkRegWR1", "out": "Out2", "to": "ForwardingUnit", "in": "EX/MEM.RegWrite", "points": [{"x": 670, "y": 430}]},
 	{"from": "EX/MEM", "out": "JumpR", "to": "ForkJumpR", "in": "In"},
+	{"from": "ForkMem", "out": "Out3", "to": "MuxJump", "in": "1", "points": [{"x": 575, "y": 92}]},
+	{"from": "EX/MEM", "out": "Target", "to": "MuxJump", "in": "0", "start": {"x": 565, "y": 181}, "points": [{"x": 570, "y": 181}, {"x": 570, "y": 81}]},
+	{"from": "ForkJumpR", "out": "Out1", "to": "MuxJump", "in": "Jump", "start": {"x": 585, "y": 160}, "end": {"x": 600, "y": 100}, "points": [{"x": 585, "y": 100}]},
+	{"from": "MuxJump", "out": "Target", "to": "MuxPC", "in": "1", "points": [{"x": 625, "y": 87}, {"x": 625, "y": 67}, {"x": 5, "y": 67}, {"x": 5, "y": 270}]},
 
     {"from": "MEM/WB", "out": "ReadData", "to": "MuxMem", "in": "1", "start": {"x": 695, "y": 292}},
     {"from": "MEM/WB", "out": "Result", "to": "MuxMem", "in": "0", "start": {"x": 695, "y": 360}, "points": [{"x": 702, "y": 360}, {"x": 702, "y": 281}]},

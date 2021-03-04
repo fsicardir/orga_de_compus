@@ -50,7 +50,7 @@
       {"aluop": 2, "func": 37, "out": {"Operation": 1}},
       {"aluop": 2, "func": 42, "out": {"Operation": 7}},
       {"aluop": 2, "func": 39, "out": {"Operation": 12}},
-	  {"aluop": 2, "func": 9, "out": {"JumpR": 1}}
+	  {"aluop": 2, "func": 9, "out": {"Operation": 1, "JumpR": 1}}
     ],
     "operations": {
       "0": "and",
