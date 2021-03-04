@@ -15,7 +15,8 @@
     "addi": {"type": "I", "args": ["reg", "reg", "int"], "fields": {"op": 8, "rs": "#2", "rt": "#1", "imm": "#3"}, "desc": "$t1 = $t2 + 23"},
     "beq":  {"type": "I", "args": ["reg", "reg", "offset"], "fields": {"op": 4, "rs": "#1", "rt": "#2", "imm": "#3"}, "desc": "PC += ($t1 == $t2) ? (offset * 4 + 4) : 4"},
     "lw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 35, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "$t1 = MEM[base + $t2]"},
-    "sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"}
+    "sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"},
+    "jalr": {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": "#1", "rt": 0, "rd": 31, "shamt": 0, "func": 9},"desc": "$ra = PC+4; PC = $t1"}
   },
   "pseudo": {
     "li":   {"args": ["reg", "int"], "to": ["addi #1, $0, #2"], "desc": "$t1 = 22"},
@@ -30,9 +31,9 @@
     "not":  {"args": ["reg", "reg"], "to": ["nor #1, #2, $0"], "desc": "$t1 = ~$t2"}
   },
   "control": {
-    "0": {"RegDst": 1, "RegWrite": 1, "ALUOp": 2, "ALUSrc": 0, "MemToReg": 0},
-    "8": {"RegDst": 0, "RegWrite": 1, "ALUOp": 0, "ALUSrc": 1, "MemToReg": 0},
-    "4": {"ALUOp": 1, "ALUSrc": 0, "Branch": 1},
+    "0":  {"RegDst": 1, "RegWrite": 1, "ALUOp": 2, "ALUSrc": 0, "MemToReg": 0},
+    "8":  {"RegDst": 0, "RegWrite": 1, "ALUOp": 0, "ALUSrc": 1, "MemToReg": 0},
+    "4":  {"ALUOp": 1, "ALUSrc": 0, "Branch": 1},
     "35": {"ALUOp": 0, "ALUSrc": 1, "RegDst": 0, "RegWrite": 1, "MemRead": 1, "MemWrite": 0, "MemToReg": 1},
     "43": {"ALUOp": 0, "ALUSrc": 1, "RegDst": 0, "RegWrite": 0, "MemRead": 0, "MemWrite": 1, "MemToReg": 0}
   },
@@ -48,7 +49,8 @@
       {"aluop": 2, "func": 36, "out": {"Operation": 0}},
       {"aluop": 2, "func": 37, "out": {"Operation": 1}},
       {"aluop": 2, "func": 42, "out": {"Operation": 7}},
-      {"aluop": 2, "func": 39, "out": {"Operation": 12}}
+      {"aluop": 2, "func": 39, "out": {"Operation": 12}},
+	  {"aluop": 2, "func": 9, "out": {"JumpR": 1}}
     ],
     "operations": {
       "0": "and",
