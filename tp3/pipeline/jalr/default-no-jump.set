@@ -16,7 +16,7 @@
     "beq":  {"type": "I", "args": ["reg", "reg", "offset"], "fields": {"op": 4, "rs": "#1", "rt": "#2", "imm": "#3"}, "desc": "PC += ($t1 == $t2) ? (offset * 4 + 4) : 4"},
     "lw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 35, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "$t1 = MEM[base + $t2]"},
     "sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"},
-	"jr":   {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": "#1", "rt": 0, "rd": 0, "shamt": 0, "func": 9},"desc": "$ra = PC+4; PC = $t1"},
+    "jr":   {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": "#1", "rt": 0, "rd": 0, "shamt": 0, "func": 9},"desc": "$ra = PC+4; PC = $t1"},
     "jalr": {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": "#1", "rt": 0, "rd": 31, "shamt": 0, "func": 9},"desc": "$ra = PC+4; PC = $t1"}
   },
   "pseudo": {
@@ -51,7 +51,7 @@
       {"aluop": 2, "func": 37, "out": {"Operation": 1}},
       {"aluop": 2, "func": 42, "out": {"Operation": 7}},
       {"aluop": 2, "func": 39, "out": {"Operation": 12}},
-	  {"aluop": 2, "func": 9, "out": {"Operation": 1, "JumpR": 1}}
+      {"aluop": 2, "func": 9, "out": {"Operation": 1, "JumpR": 1}}
     ],
     "operations": {
       "0": "and",
