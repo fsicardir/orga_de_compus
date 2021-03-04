@@ -393,7 +393,7 @@
     },
     "ForkJumpReg": {
       "type": "Fork",
-      "x": 380,
+      "x": 390,
       "y": 248,
       "size": 32,
       "in": "In",
@@ -810,7 +810,13 @@
       "from": "ALUControl",
       "out": "JumpReg",
       "to": "MuxJumpReg",
-      "in": "JumpReg"
+      "in": "JumpReg",
+      "points": [
+        {
+          "x": 637,
+          "y": 343
+        }
+      ]
     },
     {
       "from": "DistImm",
@@ -886,7 +892,7 @@
       "points": [
         {
           "x": 430,
-          "y": 350
+          "y": 356
         }
       ]
     },
@@ -1042,13 +1048,31 @@
       "from": "ForkJumpReg",
       "out": "Out2",
       "to": "MuxJumpReg",
-      "in": "1"
+      "in": "1",
+      "points": [
+        {
+          "x": 390,
+          "y": 180
+        },
+        {
+          "x": 610,
+          "y": 180
+        },
+        {
+          "x": 610,
+          "y": 40
+        }
+      ]
     },
     {
       "from": "MuxJump",
       "out": "Out",
       "to": "MuxJumpReg",
-      "in": "0"
+      "in": "0",
+      "end": {
+        "x": 630,
+        "y": 35
+      }
     },
     {
       "from": "ForkReg",

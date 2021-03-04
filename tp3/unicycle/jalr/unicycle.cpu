@@ -10,7 +10,7 @@
     "JrControlFork": {
       "type": "Fork",
       "x": 450,
-      "y": 350,
+      "y": 343,
       "size": 1,
       "in": "In",
       "out": [
@@ -20,8 +20,8 @@
     },
     "PC+4Fork": {
       "type": "Fork",
-      "x": 200,
-      "y": 70,
+      "x": 197,
+      "y": 75,
       "size": 32,
       "in": "In",
       "out": [
@@ -294,7 +294,7 @@
         "0",
         "1"
       ],
-      "x": 200,
+      "x": 205,
       "y": 380,
       "out": "Out",
       "desc": {
@@ -431,7 +431,7 @@
     },
     "ForkJumpReg": {
       "type": "Fork",
-      "x": 380,
+      "x": 390,
       "y": 248,
       "size": 32,
       "in": "In",
@@ -860,13 +860,29 @@
       "from": "JrControlFork",
       "out": "Out1",
       "to": "MuxJumpReg",
-      "in": "JumpReg"
+      "in": "JumpReg",
+      "points": [
+        {
+          "x": 637,
+          "y": 343
+        }
+      ]
     },
     {
       "from": "JrControlFork",
       "out": "Out2",
       "to": "MuxJalr",
-      "in": "MuxJalr"
+      "in": "MuxJalr",
+      "points": [
+        {
+          "x": 450,
+          "y": 375
+        },
+        {
+          "x": 212,
+          "y": 375
+        }
+      ]
     },
     {
       "from": "DistImm",
@@ -942,7 +958,7 @@
       "points": [
         {
           "x": 430,
-          "y": 350
+          "y": 356
         }
       ]
     },
@@ -1098,13 +1114,31 @@
       "from": "ForkJumpReg",
       "out": "Out2",
       "to": "MuxJumpReg",
-      "in": "1"
+      "in": "1",
+      "points": [
+        {
+          "x": 390,
+          "y": 180
+        },
+        {
+          "x": 610,
+          "y": 180
+        },
+        {
+          "x": 610,
+          "y": 40
+        }
+      ]
     },
     {
       "from": "MuxJump",
       "out": "Out",
       "to": "MuxJumpReg",
-      "in": "0"
+      "in": "0",
+      "end": {
+        "x": 630,
+        "y": 35
+      }
     },
     {
       "from": "ForkReg",
@@ -1196,19 +1230,65 @@
       "from": "MuxJalr",
       "out": "Out",
       "to": "RegBank",
-      "in": "WriteData"
+      "in": "WriteData",
+      "end": {
+        "x": 250,
+        "y": 300
+      },
+      "points": [
+        {
+          "x": 230,
+          "y": 397
+        },
+        {
+          "x": 230,
+          "y": 300
+        }
+      ]
     },
     {
       "from": "MuxMem",
       "out": "Out",
       "to": "MuxJalr",
-      "in": "0"
+      "in": "0",
+      "end": {
+        "x": 205,
+        "y": 405
+      },
+      "points": [
+        {
+          "x": 600,
+          "y": 287
+        },
+        {
+          "x": 600,
+          "y": 420
+        },
+        {
+          "x": 197,
+          "y": 420
+        },
+        {
+          "x": 197,
+          "y": 405
+        }
+      ]
     },
     {
       "from": "PC+4Fork",
       "out": "Out2",
       "to": "MuxJalr",
-      "in": "1"
+      "in": "1",
+      "end": {
+        "x": 205,
+        "y": 395
+      },
+      "points": [
+        {
+          "x": 197,
+          "y": 395
+        }
+      ]
     }
   ],
   "reg_names": [
