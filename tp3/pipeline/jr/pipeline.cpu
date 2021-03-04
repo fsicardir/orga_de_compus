@@ -45,7 +45,7 @@
 
     "EX/MEM":     {"type": "PipelineRegister", "x": 550, "y": 110, "regs": {"Result": 32, "ReadData2": 32, "Zero": 1, "RegBankDst": 5, "Target": 32, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1, "NewPC": 32, "JumpR": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
     
-	"OrJump":     {"type": "Or", "x": 600, "y": 148, "in1": "Jump", "in2": "Branch", "out": "Flush"},
+    "OrJump":     {"type": "Or", "x": 600, "y": 148, "in1": "Jump", "in2": "Branch", "out": "Flush"},
     "ForkJumpR":  {"type": "Fork", "x": 585, "y": 160, "size": 1, "in": "In", "out": ["Out1", "Out2", "Out3"]},
     "ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2", "Out3"]},
     "ForkEXR1":   {"type": "Fork", "x": 575, "y": 360, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
@@ -58,7 +58,7 @@
     "ForkBr2":    {"type": "Fork", "x": 397, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
     "ForkBr3":    {"type": "Fork", "x": 185, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
     "OrFlush":    {"type": "Or", "x": 375, "y": 70, "in1": "Stall", "in2": "Branch", "out": "Flush"},
-	"MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 600, "y": 70, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Target", "desc": {"default": "Selects jump address or branch address as the new PC."}},
+    "MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 600, "y": 70, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Target", "desc": {"default": "Selects jump address or branch address as the new PC."}},
     
     "MEM/WB":     {"type": "PipelineRegister", "x": 680, "y": 110, "regs": {"Result": 32, "ReadData": 32, "RegBankDst": 5, "MemToReg": 1, "RegWrite": 1, "JumpR": 1, "NewPC": 32}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente."}},
     
@@ -67,7 +67,7 @@
     "ForkDst2":   {"type": "Fork", "x": 705, "y": 440, "size": 5, "in": "In", "out": ["Out1", "Out2"]},
     "ForkMemR1":  {"type": "Fork", "x": 416, "y": 480, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 
-	"MuxMem2":    {"type": "Multiplexer", "latency": 15, "x": 740, "y": 220, "size": 32, "sel": "JumpR", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects, in conjunction with the previous multiplexer, the result of the ALU, the value read from memory or NewPC to write to the destination register (WriteData)"}}
+    "MuxMem2":    {"type": "Multiplexer", "latency": 15, "x": 740, "y": 220, "size": 32, "sel": "JumpR", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects, in conjunction with the previous multiplexer, the result of the ALU, the value read from memory or NewPC to write to the destination register (WriteData)"}}
   },
   "wires": [
     {"from": "PC", "out": "PC", "to": "ForkPC", "in": "In"},
@@ -126,7 +126,7 @@
     {"from": "ID/EX", "out": "ALUSrc", "to": "MuxReg", "in": "ALUSrc", "start": {"x": 405, "y": 155}, "points": [{"x": 462, "y": 155}]},
     {"from": "ID/EX", "out": "Imm", "to": "DistImm", "in": "In", "start": {"x": 405, "y": 350}, "end": {"x": 448, "y": 350}},
     {"from": "ALUControl", "out": "Operation", "to": "ALU", "in": "Operation", "start": {"x": 450, "y": 340}, "points": [{"x": 510, "y": 340}]},
-	{"from": "ALUControl", "out": "JumpR", "to": "EX/MEM", "in": "JumpR", "start": {"x": 490, "y": 355}, "end": {"x": 550, "y": 160}, "points": [{"x": 548, "y": 355}, {"x": 548, "y": 160}]},
+    {"from": "ALUControl", "out": "JumpR", "to": "EX/MEM", "in": "JumpR", "start": {"x": 490, "y": 355}, "end": {"x": 550, "y": 160}, "points": [{"x": 548, "y": 355}, {"x": 548, "y": 160}]},
     {"from": "DistImm", "out": "5-0", "to": "ALUControl", "in": "func", "start": {"x": 448, "y": 350}},
     {"from": "ID/EX", "out": "ALUOp", "to": "ALUControl", "in": "ALUOp", "start": {"x": 405, "y": 160}, "points": [{"x": 446, "y": 160}, {"x": 446, "y": 235}, {"x": 476, "y": 235}]},
     {"from": "ALU", "out": "Zero", "to": "EX/MEM", "in": "Zero", "start": {"x": 540, "y": 255}, "end": {"x": 550, "y": 255}},
@@ -139,8 +139,8 @@
     {"from": "ID/EX", "out": "RegDst", "to": "MuxDst", "in": "RegDst", "start": {"x": 405, "y": 150}, "points": [{"x": 547, "y": 150}, {"x": 547, "y": 365}, {"x": 533, "y": 365}]},
     {"from": "MuxDst", "out": "Out", "to": "EX/MEM", "in": "RegBankDst", "end": {"x": 550, "y": 387}},
     {"from": "ID/EX", "out": "NewPC", "to": "ForkNewPC", "in": "In", "start": {"x": 405, "y": 175}},
-	{"from": "ForkNewPC", "out": "Out1", "to": "AddBranch", "in": "In1"},
-	{"from": "ForkNewPC", "out": "Out2", "to": "EX/MEM", "in": "NewPC", "end": {"x": 550, "y": 232}, "points": [{"x": 455, "y": 232}]},
+    {"from": "ForkNewPC", "out": "Out1", "to": "AddBranch", "in": "In1"},
+    {"from": "ForkNewPC", "out": "Out2", "to": "EX/MEM", "in": "NewPC", "end": {"x": 550, "y": 232}, "points": [{"x": 455, "y": 232}]},
     {"from": "DistImm", "out": "31-0", "to": "ForkImm", "in": "In", "start": {"x": 450, "y": 330}},
     {"from": "ForkImm", "out": "Out1", "to": "MuxReg", "in": "1"},
     {"from": "ForkImm", "out": "Out2", "to": "ShiftImm", "in": "In", "points": [{"x": 450, "y": 210}]},
@@ -171,8 +171,8 @@
     {"from": "EX/MEM", "out": "Zero", "to": "AndBranch", "in": "Zero", "start": {"x": 565, "y": 255}, "points": [{"x": 572, "y": 255}, {"x": 572, "y": 200}]},
     {"from": "EX/MEM", "out": "Branch", "to": "AndBranch", "in": "Branch", "start": {"x": 565, "y": 145}, "points": [{"x": 580, "y": 145}, {"x": 580, "y": 190}]},
     {"from": "AndBranch", "out": "Branch", "to": "OrJump", "in": "Branch", "end": {"x": 600, "y": 170}, "points": [{"x": 640, "y": 195}, {"x": 640, "y": 220}, {"x": 595, "y": 220}, {"x": 595, "y": 170}]},
-	{"from": "ForkJumpR", "out": "Out2", "to": "OrJump", "in": "Jump", "end": {"x": 600, "y": 160}},
-	{"from": "OrJump", "out": "Flush", "to": "ForkBr1", "in": "In", "points": [{"x": 640, "y": 163}, {"x": 640, "y": 62}]},
+    {"from": "ForkJumpR", "out": "Out2", "to": "OrJump", "in": "Jump", "end": {"x": 600, "y": 160}},
+    {"from": "OrJump", "out": "Flush", "to": "ForkBr1", "in": "In", "points": [{"x": 640, "y": 163}, {"x": 640, "y": 62}]},
     {"from": "ForkBr1", "out": "Out1", "to": "ForkBr2", "in": "In"},
     {"from": "ForkBr1", "out": "Out2", "to": "EX/MEM", "in": "Flush"},
     {"from": "ForkBr2", "out": "Out1", "to": "ForkBr3", "in": "In"},
@@ -185,13 +185,13 @@
     {"from": "EX/MEM", "out": "RegWrite", "to": "ForkRegWR1", "in": "In", "start": {"x": 565, "y": 125}},
     {"from": "ForkRegWR1", "out": "Out1", "to": "MEM/WB", "in": "RegWrite", "end": {"x": 680, "y": 125}},
     {"from": "ForkRegWR1", "out": "Out2", "to": "ForwardingUnit", "in": "EX/MEM.RegWrite", "points": [{"x": 670, "y": 430}]},
-	{"from": "EX/MEM", "out": "JumpR", "to": "ForkJumpR", "in": "In", "start": {"x": 565, "y": 160}},
-	{"from": "ForkMem", "out": "Out3", "to": "MuxJump", "in": "1", "points": [{"x": 575, "y": 92}]},
-	{"from": "EX/MEM", "out": "Target", "to": "MuxJump", "in": "0", "start": {"x": 565, "y": 181}, "points": [{"x": 570, "y": 181}, {"x": 570, "y": 81}]},
-	{"from": "ForkJumpR", "out": "Out1", "to": "MuxJump", "in": "Jump", "start": {"x": 585, "y": 160}, "end": {"x": 600, "y": 100}, "points": [{"x": 585, "y": 100}]},
-	{"from": "MuxJump", "out": "Target", "to": "MuxPC", "in": "1", "points": [{"x": 625, "y": 87}, {"x": 625, "y": 67}, {"x": 5, "y": 67}, {"x": 5, "y": 270}]},
-	{"from": "ForkJumpR", "out": "Out3", "to": "MEM/WB", "in": "JumpR", "start": {"x": 585, "y": 160}, "end": {"x": 680, "y": 230}, "points": [{"x": 585, "y": 230}]},
-	{"from": "EX/MEM", "out": "NewPC", "to": "MEM/WB", "in": "NewPC", "start": {"x": 565, "y": 232}, "end": {"x": 680, "y": 232}},
+    {"from": "EX/MEM", "out": "JumpR", "to": "ForkJumpR", "in": "In", "start": {"x": 565, "y": 160}},
+    {"from": "ForkMem", "out": "Out3", "to": "MuxJump", "in": "1", "points": [{"x": 575, "y": 92}]},
+    {"from": "EX/MEM", "out": "Target", "to": "MuxJump", "in": "0", "start": {"x": 565, "y": 181}, "points": [{"x": 570, "y": 181}, {"x": 570, "y": 81}]},
+    {"from": "ForkJumpR", "out": "Out1", "to": "MuxJump", "in": "Jump", "start": {"x": 585, "y": 160}, "end": {"x": 600, "y": 100}, "points": [{"x": 585, "y": 100}]},
+    {"from": "MuxJump", "out": "Target", "to": "MuxPC", "in": "1", "points": [{"x": 625, "y": 87}, {"x": 625, "y": 67}, {"x": 5, "y": 67}, {"x": 5, "y": 270}]},
+    {"from": "ForkJumpR", "out": "Out3", "to": "MEM/WB", "in": "JumpR", "start": {"x": 585, "y": 160}, "end": {"x": 680, "y": 230}, "points": [{"x": 585, "y": 230}]},
+    {"from": "EX/MEM", "out": "NewPC", "to": "MEM/WB", "in": "NewPC", "start": {"x": 565, "y": 232}, "end": {"x": 680, "y": 232}},
 
     {"from": "MEM/WB", "out": "ReadData", "to": "MuxMem", "in": "1", "start": {"x": 695, "y": 292}},
     {"from": "MEM/WB", "out": "Result", "to": "MuxMem", "in": "0", "start": {"x": 695, "y": 360}, "points": [{"x": 702, "y": 360}, {"x": 702, "y": 281}]},
@@ -206,10 +206,10 @@
     {"from": "ForkRegWR2", "out": "Out1", "to": "RegBank", "in": "RegWrite", "points": [{"x": 710, "y": 105}, {"x": 300, "y": 105}]},
     {"from": "ForkRegWR2", "out": "Out2", "to": "ForwardingUnit", "in": "MEM/WB.RegWrite", "points": [{"x": 710, "y": 450}]},
 
-	{"from": "MEM/WB", "out": "NewPC", "to": "MuxMem2", "in": "1", "start": {"x": 695, "y": 232}, "end": {"x": 740, "y": 232}},
+    {"from": "MEM/WB", "out": "NewPC", "to": "MuxMem2", "in": "1", "start": {"x": 695, "y": 232}, "end": {"x": 740, "y": 232}},
     {"from": "MuxMem", "out": "Out", "to": "MuxMem2", "in": "0", "start": {"x": 730, "y": 287}, "end": {"x": 740, "y": 240}, "points": [{"x": 735, "y": 287}, {"x": 735, "y": 240}]},
     {"from": "MEM/WB", "out": "JumpR", "to": "MuxMem2", "in": "JumpR", "start": {"x": 695, "y": 230}, "end": {"x": 740, "y": 230}},
-	{"from": "MuxMem2", "out": "Out", "to": "ForkMemR1", "in": "In", "points": [{"x": 760, "y": 237}, {"x": 760, "y": 480}]}
+    {"from": "MuxMem2", "out": "Out", "to": "ForkMemR1", "in": "In", "points": [{"x": 760, "y": 237}, {"x": 760, "y": 480}]}
   ],
   "reg_names": ["zero", "at", "v0", "v1", "a0", "a1", "a2", "a3", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "t8", "t9", "k0", "k1", "gp", "sp", "fp", "ra"],
   "instructions": "default-no-jump.set"
